@@ -1,0 +1,16 @@
+{
+  "env":{
+    "node": true
+  },
+  "rules": {
+    "quotes": [0],
+    "curly": [0],
+    "eol-last": [0],
+    "new-cap": [0],
+    "space-infix-ops": [0],
+    "comma-spacing": [0],
+    "no-underscore-dangle": [0],
+    "camelcase": [0],
+    "key-spacing": [0]
+  }
+}

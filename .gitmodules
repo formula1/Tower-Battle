@@ -1,0 +1,3 @@
+[submodule "git_modules/Box2d"]
+	path = git_modules/Box2d
+	url = git@github.com:kripken/box2d.js.git

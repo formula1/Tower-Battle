@@ -1,0 +1,36 @@
+{
+  "preset": "airbnb",
+
+  "requireSpaceBeforeObjectValues": true,
+  "maximumLineLength": 80,
+
+  "requireSpaceBeforeBlockStatements": false,
+  "disallowSpaceBeforeBlockStatements": true,
+
+  "requireSpaceBeforeBinaryOperators": true,
+
+  "requireSpaceAfterBinaryOperators": true,
+
+  "requireSpaceAfterKeywords": false,
+
+  "requireCurlyBraces": false,
+
+  "requireSpacesInConditionalExpression": false,
+  "disallowSpacesInConditionalExpression": true,
+
+  "disallowMultipleVarDecl": false,
+
+  "requireSpaceAfterComma": true,
+
+  "requireSpacesInFunctionExpression": false,
+  "disallowSpacesInFunctionExpression": {
+    "beforeOpeningRoundBrace": true,
+    "beforeOpeningCurlyBrace": true
+  },
+
+  "requireTrailingComma": false,
+  "disallowTrailingComma": true,
+
+  "requireCamelCaseOrUpperCaseIdentifiers": false,
+  "disallowQuotedKeysInObjects": false
+}
