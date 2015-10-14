@@ -1,7 +1,7 @@
 'use strict';
 
 var ContactEmitter = require('./ContactEmitter');
-var Box2D = global.Box2D;
+var Box2D = require('Box2D');
 var listener = module.exports = new Box2D.JSContactListener();
 
 var curContacts = {};

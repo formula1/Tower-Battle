@@ -1,6 +1,6 @@
 'use strict';
 
-var Vec2 = global.Box2D.b2Vec2;
+var Vec2 = require('Box2D').b2Vec2;
 
 Vec2.prototype.clone = function(){
   return new Vec2(this.get_x(), this.get_y());

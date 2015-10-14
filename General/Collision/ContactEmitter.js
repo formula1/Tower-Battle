@@ -1,6 +1,6 @@
 'use strict';
 var EE = require('events').EventEmitter;
-var Box2D = global.Box2D;
+var Box2D = require('Box2D');
 var b2Body = Box2D.b2Body;
 var b2Fixture = Box2D.b2Fixture;
 

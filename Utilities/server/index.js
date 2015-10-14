@@ -8,10 +8,11 @@ var fs = require('fs');
 var open = require('open');
 var path = require('path');
 
-var b = browserify(path.join(__dirname, 'index.js'))
+var b = browserify(path.resolve(__dirname, '../../index.js'))
 .transform(literalify.configure({
-  './web_modules/Box2D_v2.3.1_debug.js': 'Module'
-})).transform(envify({
+  Box2D: 'Module'
+}))
+.transform(envify({
   TARGET_ENV: 'browser'
 })).on('error', function(){
   console.log('global error');
@@ -30,7 +31,7 @@ server.on('request', function(req, res){
       break;
     case '/Box2D.js':
       res.setHeader('Content-Type', 'application/javascript');
-      fs.createReadStream('./web_modules/Box2D_v2.3.1_debug.js').pipe(res);
+      fs.createReadStream('../../web_modules/Box2D_v2.3.1_debug.js').pipe(res);
       break;
     case '/index.js':
       res.setHeader('Content-Type', 'application/javascript');

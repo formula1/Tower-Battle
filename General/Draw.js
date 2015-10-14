@@ -1,8 +1,8 @@
 'use strict';
 
-var Box2D = global.Box2D;
-var DebugDraw = global.Box2D.JSDraw;
-var Vec2 = global.Box2D.b2Vec2;
+var Box2D = require('Box2D');
+var DebugDraw = Box2D.JSDraw;
+var Vec2 = Box2D.b2Vec2;
 var proto = {};
 
 var tempV = new Vec2();

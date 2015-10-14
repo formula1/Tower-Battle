@@ -3,7 +3,7 @@
 'use strict';
 
 var EE = require('events').EventEmitter;
-var Vec2 = global.Box2D.b2Vec2;
+var Vec2 = require('Box2D').b2Vec2;
 
 var KeyBoard = module.exports = function(keyboard){
   EE.call(this);
@@ -19,7 +19,7 @@ var KeyBoard = module.exports = function(keyboard){
   };
 
   this.vec2 = new Vec2();
-  keyboard.addEventListener('keydown',function(e){
+  keyboard.addEventListener('keydown', function(e){
     var k = e.keyCode;
     var s = String.fromCharCode(e.keyCode);
     if(!(s in this.isOn)){
@@ -31,6 +31,7 @@ var KeyBoard = module.exports = function(keyboard){
         case 40: this.zoomOut(); return;
       }
     }
+
     if(this.isOn[s]) return;
     this.isOn[s] = true;
     switch(s){
@@ -42,7 +43,7 @@ var KeyBoard = module.exports = function(keyboard){
       case 'L': this.attack(true); return;
     }
   }.bind(this));
-  keyboard.addEventListener('keyup',function(e){
+  keyboard.addEventListener('keyup', function(e){
     var s = String.fromCharCode(e.keyCode);
     if(!(s in this.isOn)) return;
     this.isOn[s] = false;
@@ -78,7 +79,7 @@ KeyBoard.prototype.zoomOut = function(){
 };
 
 KeyBoard.prototype.attack = function(boo){
-  if(boo) return this.emit('attack',boo);
+  if(boo) return this.emit('attack', boo);
 };
 
 KeyBoard.findKeyBoard = function(){

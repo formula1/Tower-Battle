@@ -1,6 +1,6 @@
 'use strict';
 
-var B2D = global.Box2D;
+var B2D = require('Box2D');
 var Vec2 = B2D.b2Vec2;
 var Role = require('../../Dungeon/Room/Role');
 var includeFolder = require('include-folder');

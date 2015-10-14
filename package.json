@@ -4,7 +4,9 @@
   "description": "Tower, floors, rooms",
   "main": "game.js",
   "scripts": {
-    "install": "node install",
+    "install": "node Utilities/install",
+    "start": "node Utilities/server",
+    "build": "node Utilities/build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "formula1 <samtobia@gmail.com> (https://github.com/formula1)",
@@ -22,6 +24,9 @@
     "open": "0.0.5",
     "request": "^2.64.0",
     "setimmediate": "^1.0.2",
-    "term-canvas": "0.0.5"
+    "term-canvas": "0.0.5",
+    "uglify": "^0.1.5",
+    "uglify-js": "^2.5.0",
+    "uglifyify": "^3.0.1"
   }
 }

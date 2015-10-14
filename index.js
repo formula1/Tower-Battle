@@ -2,7 +2,6 @@
 
 'use strict';
 
-global.Box2D = require('./web_modules/Box2D_v2.3.1_debug.js');
 var Game = require('./game');
 var Draw = require('./General/Draw');
 var Keyboard;

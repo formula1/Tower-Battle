@@ -1,6 +1,6 @@
 'use strict';
 
-var B2d = global.Box2D;
+var B2d = require('Box2D');
 
 var Vec2 = B2d.b2Vec2;
 var BodyDef = B2d.b2BodyDef;

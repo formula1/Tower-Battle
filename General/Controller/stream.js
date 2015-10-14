@@ -1,12 +1,12 @@
 'use strict';
 
 var EE = require('events').EventEmitter;
-var Vec2 = global.Box2D.b2Vec2;
+var Vec2 = require('Box2D').b2Vec2;
 
 var Stream = module.exports = function(stream){
   EE.call(this);
   this.vec2 = new Vec2();
-  stream.on('data',function(data){
+  stream.on('data', function(data){
     data.toString('utf8').split('').forEach(function(c){
       switch(c){
         case 'a': return this.move(-1, 0);
@@ -47,5 +47,5 @@ Stream.prototype.run = function(boo){
 };
 
 Stream.prototype.attack = function(boo){
-  if(boo) return this.emit('attack',boo);
+  if(boo) return this.emit('attack', boo);
 };

@@ -1,7 +1,8 @@
 'use strict';
-var b2Filter = global.Box2D.b2Filter;
-var b2Body = global.Box2D.b2Body;
-var b2Fixture = global.Box2D.b2Fixture;
+var Box2D = require('Box2D');
+var b2Filter = Box2D.b2Filter;
+var b2Body = Box2D.b2Body;
+var b2Fixture = Box2D.b2Fixture;
 
 var GROUP_COUNTER = 1;
 
