@@ -1,11 +1,11 @@
 'use strict';
 
 var roomProto = require('./room-setup');
+var EntityGen = require('./entity-gen');
 
 var Floor = module.exports = function(lastFloor, tower, roles, filler){
   this.tower = tower;
-  this.world = tower.world;
-  this.rng = tower.rng; // At some point I may want to include a seed
+  this.rng = tower.game.rng; // At some point I may want to include a seed
   this.rooms = [];
   this.roles = {};
   this.lastFloor = lastFloor;
@@ -20,12 +20,17 @@ var Floor = module.exports = function(lastFloor, tower, roles, filler){
     return b.depth - a.depth;
   });
 
-  this.roles.start = this.unusedRooms.pop(); // remove the start;
+  this.roles.Start = this.unusedRooms.pop(); // remove the start;
   this.applyRoles(roles, filler);
+  EntityGen.call(this);
 };
 
-for(var i in roomProto){
-  Floor.prototype[i] = roomProto[i];
+for(var name in roomProto){
+  Floor.prototype[name] = roomProto[name];
+}
+
+for(name in EntityGen.prototype){
+  Floor.prototype[name] = EntityGen.prototype[name];
 }
 
 Floor.prototype.constructor = Floor;
@@ -49,15 +54,33 @@ Floor.prototype.applyRole = function(role){
   this.roles[role.roleName] = room;
 };
 
-Floor.prototype.spawn = function(){
-  var world = this.world;
+Floor.prototype.spawn = function(world){
+  this.world = world;
   this.rooms.forEach(function(room){
     room.spawn(world);
   });
+
+  this.entities.forEach(function(entity){
+    entity.spawn(world);
+  });
 };
 
-Floor.prototype.destroy = function(world){
+Floor.prototype.destroy = function(){
+  var world = this.world;
+  delete this.world;
   this.rooms.forEach(function(room){
     room.destroy(world);
   });
+
+  this.entities.forEach(function(entity){
+    entity.destroy(world);
+  });
+};
+
+Floor.prototype.undoRole = function(Role){
+  var roleName = Role.roleName;
+  var rs = this.rooms;
+  for(var i = 0; i < rs.length; i++){
+    if(rs[i].roleName === roleName) return rs[i].undoRole();
+  }
 };

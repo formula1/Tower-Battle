@@ -9,13 +9,15 @@ var FixtureHelper = require('../../Helpers/box2d/Fixture');
 
 var proto = module.exports;
 
+proto.getLocation = function(){
+  return new Vec2(this.location.x, this.location.y)
+    .mul(this.floor.scale * 2);
+};
+
 proto.spawn = function(world){
   var scale = this.floor.scale;
   this.position = new Vec2(this.location.x, this.location.y);
   this.position.mul(scale * 2);
-  if(this.name === 'start'){
-    console.log('start pos: ', this.position.get_x(), this.position.get_y());
-  }
 
   var bodyDef = new BodyDef();
   bodyDef.set_position(this.position);
@@ -31,6 +33,7 @@ proto.spawn = function(world){
 };
 
 proto.destroy = function(world){
+  this.removeContact(this.body);
   world.DestroyBody(this.body);
   this.emit('destroy', this);
 };

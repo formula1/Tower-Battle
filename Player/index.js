@@ -1,92 +1,68 @@
 'use strict';
 
-var B2d = global.Box2D;
-var Vec2 = B2d.b2Vec2;
-var ContactEmitter = require('../General/Collision/ContactEmitter');
-
 var PersonalBubble = require('./PersonalBubble');
-var UnEquippedWeapon = require('./Weapons/Unequipped');
-var UnEquippedArmor = require('./Armor/Unequipped');
+var Attacker = require('../Dungeon/Combat/Attacker');
+var Damageable = require('../Dungeon/Combat/Damageable');
+var Movable = require('../Dungeon/Entity/Moveable');
 
-var impulse = new Vec2();
+var FixtureHelper = require('../Helpers/box2d/Fixture');
 
-var Player = module.exports = function(
-  element, hp, personalBubbleRadius, controller, game
-){
-  ContactEmitter.call(this);
-  game.on('time', this.applyTime.bind(this));
-  this.game = game;
-  this.personalBubble = new PersonalBubble(this, personalBubbleRadius);
-  this.hp = hp;
-  this.element = element;
-  this.weapon = new UnEquippedWeapon(this, game);
-  this.armor = new UnEquippedArmor(this, game);
+var Player = module.exports = function(game, controller, config){
+  this.element = config.element;
+  this.config = config;
+  this.isPlayer = true;
 
-  controller.on('change-direction', this.changeDirection.bind(this));
-  controller.on('run', this.run.bind(this));
-  controller.on('attack', this.attack.bind(this));
+  Movable.call(this, game, controller);
+  Attacker.call(this, game, controller);
+  Damageable.call(this, game, config.hp);
+  this.personalBubble = new PersonalBubble(this, config.personalBubbleRadius);
 
-  this.newDirection = new Vec2();
-  this.oldDirection = new Vec2();
+  this.adrenaline = 0;
+  this.energy = 0;
+
+  game.on('time', function(){
+    this.adrenaline--;
+    this.adrenaline += this.personalBubble.activity;
+
+    this.energy += this.isRunning?-4:1;
+  }.bind(this));
+
+  this.controller.on('attack', function(){
+    this.energy -= this.weapon.expense;
+  }.bind(this));
+
+  this.post('damage', function(netDamage){
+    this.adrenaline += this.energy - Math.pow(netDamage.value - this.energy, 2);
+  }.bind(this));
+
+  controller.on('run', function(boo){
+    console.log(boo);
+    this.isRunning = boo;
+  }.bind(this));
+
+  this.pre('movement', function(impulse){
+    // TODO: use work/energy equaton
+    return impulse
+      .mul(this.isRunning?config.runSpeed:config.walkSpeed)
+      .mul(Math.max(1, this.adrenaline))
+      .sub(this.body.GetLinearVelocity());
+  }.bind(this));
 
 };
 
-Player.prototype = Object.create(ContactEmitter.prototype);
+Player.prototype = Object.create(Movable.prototype);
+
+for(var name in Damageable.prototype){
+  Player.prototype[name] = Damageable.prototype[name];
+}
+
+for(name in Attacker.prototype){
+  Player.prototype[name] = Attacker.prototype[name];
+}
+
 Player.prototype.constructor = Player;
 
-Object.defineProperty(Player.prototype, 'speed', {get: function(){
-  return (this.isRunning?2:1.5) * this.adrenaline;
-}});
-
-Player.prototype.spawn = require('./box2d');
-
-Player.prototype.applyTime = function(){
-  this.doAdrenaline();
-  this.doMovement();
-};
-
-Player.prototype.doAdrenaline = function(){
-  this.adrenaline--;
-  this.adrenaline += this.personalBubble.activity;
-};
-
-Player.prototype.doMovement = function(){
-  this.energy += this.isRunning?-1:2;
-  impulse.SetZero();
-  impulse.set(this.newDirection);
-  impulse.Normalize();
-  impulse.mul(this.isRunning?20:10)
-  .sub(this.body.GetLinearVelocity())
-  .mul(this.body.GetMass());
-  this.body.ApplyLinearImpulse(impulse, this.body.GetWorldCenter());
-};
-
-Player.prototype.changeDirection = function(vec2){
-  this.newDirection.set(vec2.get_x(), vec2.get_y());
-};
-
-Player.prototype.run = function(boo){
-  this.isRunning = boo;
-};
-
-Player.prototype.attack = function(){
-  this.weapon.attemptAttack();
-  this.energy -= this.weapon.expense;
-};
-
-Player.prototype.addAdrenaline = function(attack, impact){
-  this.adrenaline += attack * impact - this.debt;
-};
-
-Player.prototype.useArmor = function(armor){
-  this.armor.setPlayer(void 0);
-  this.armor = armor;
-  this.armor.setPlayer(this);
-};
-
-Player.prototype.useWeapon = function(weapon){
-  this.weapon.setPlayer(void 0);
-  this.weapon = weapon;
-  this.weapon.setPlayer(this);
+Player.prototype.getDamageableShape = function(){
+  return FixtureHelper.circle(this.config.damageableRadius);
 };
 

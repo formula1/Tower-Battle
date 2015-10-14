@@ -26,9 +26,15 @@ var Game = module.exports = function(seed, draw, controller, size){
   }, .1, controller);
   this.world.SetDebugDraw(draw);
 
-  this.tower = new Tower(8, this);
+  this.tower = new Tower(this, 8);
 
-  this.player = new Player(1, 30, 10, controller, this);
+  this.player = new Player(this, controller, {
+    hp: 30,
+    damageableRadius: 3,
+    personalBubbleRadius: 10,
+    runSpeed: 10,
+    walkSpeed: 5
+  });
 
 };
 
@@ -55,7 +61,7 @@ Game.prototype.render = function(timeStep){
 Game.prototype.start = function(){
   console.log('starting');
   this.tower.setFloor(0);
-  this.player.spawn(this.tower.getStart());
+  this.player.spawn(this.world, this.tower.getStart());
   this.camera.follow(this.player.body);
   console.log('spawned');
   setImmediate(this.loop.bind(this));

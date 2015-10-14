@@ -5,6 +5,7 @@ var b2Body = Box2D.b2Body;
 var b2Fixture = Box2D.b2Fixture;
 
 var ContactEmitter = module.exports = function(){
+  if(this._events) return;
   EE.call(this);
 };
 
@@ -25,9 +26,9 @@ ContactEmitter.prototype.appendContact = function(entity, fn, onoff){
   if(entity instanceof b2Body){
     var fix = entity.GetFixtureList();
     var ret = [];
-    while(fix){
-      console.log(fix);
+    while(fix.ptr){
       ret.push(this.appendContact(fix, fn, onoff));
+      fix = fix.GetNext();
     }
 
     return ret;
@@ -59,9 +60,9 @@ ContactEmitter.prototype.removeContact = function(entity, fn, onoff){
   if(entity instanceof b2Body){
     var fix = entity.GetFixtureList();
     var ret = [];
-    while(fix){
-      console.log(fix);
-      ret.push(this.offContact(fix, fn, onoff));
+    while(fix.ptr){
+      ret.push(this.removeContact(fix, fn, onoff));
+      fix = fix.GetNext();
     }
 
     return ret;
@@ -71,8 +72,11 @@ ContactEmitter.prototype.removeContact = function(entity, fn, onoff){
     throw new Error('Can only listen to a body or a fixture');
   }
 
-  if(!entity.collisionEmitter){
-    return console.warn('this body has fixtures without listeners');
+  if(!entity.collisionEmitter){ return void 0; }
+
+  if(!onoff){
+    this.removeAllListeners(entity.collisionEmitter.uid + 'on');
+    return this.removeAllListeners(entity.collisionEmitter.uid + 'off');
   }
 
   if(!fn) return this.removeAllListeners(entity.collisionEmitter.uid + onoff);

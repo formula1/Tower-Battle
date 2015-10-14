@@ -1,0 +1,7 @@
+{
+  "CANCEL": "canceling",
+  "ATTACK": "attacking",
+  "FALTER": "faltering",
+  "IDLE": "idleing",
+  "DORMANT": "sleeping"
+}

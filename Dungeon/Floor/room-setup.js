@@ -15,8 +15,7 @@ prototype.generateRooms = function(lastFloor){
 
   this.scale = 20;
   this.stackLength = 0;
-  var start = lastFloor?lastFloor.roles.end.location:{x: 0, y: 0};
-  console.log('start location', start);
+  var start = lastFloor?lastFloor.roles.End.location:{x: 0, y: 0};
   this.roles.start = this.createRoom(start);
   this.roles.start.name = 'start';
   while(this.stackLength){

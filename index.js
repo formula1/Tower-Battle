@@ -20,6 +20,7 @@ if (process.env.TARGET_ENV === 'browser'){
 
 var e_shapeBit = 0x0001;
 var e_jointBit = 0x0002;
+
 // var e_aabbBit = 0x0004;
 // var e_pairBit = 0x0008;
 var e_centerOfMassBit = 0x0010;
@@ -33,12 +34,15 @@ readyListener(function(){
     w = parseInt(window.getComputedStyle(canvas).width.substring(-2));
     h = parseInt(window.getComputedStyle(canvas).height.substring(-2));
   }else{
+    w = 100; h = 100;
     ctx = require('./General/LoggerContext');
   }
+
   var draw = Draw(ctx, w, h);
   var flags = 0;
   flags |= e_shapeBit;
   flags |= e_jointBit;
+
   //  flags |= e_aabbBit;
   //	flags |= e_pairBit;
   flags |= e_centerOfMassBit;

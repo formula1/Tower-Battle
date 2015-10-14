@@ -13,12 +13,14 @@ var b = browserify(path.join(__dirname, 'index.js'))
   './web_modules/Box2D_v2.3.1_debug.js': 'Module'
 })).transform(envify({
   TARGET_ENV: 'browser'
-}));
+})).on('error', function(){
+  console.log('global error');
+});
 
 var server = new http.Server();
 
 server.on('request', function(req, res){
-  console.log('request: ',req.url);
+  console.log('request: ', req.url);
   switch(req.url){
     case '':
     case '/':
@@ -32,7 +34,22 @@ server.on('request', function(req, res){
       break;
     case '/index.js':
       res.setHeader('Content-Type', 'application/javascript');
-      b.bundle().pipe(res);
+      var el, fl, s;
+      var erhandled = false;
+
+      s = b.bundle().once('error', el = function(err){
+        s.removeListener('finish', fl);
+        console.error('catching error', err.message);
+        erhandled = err;
+        res.end();
+      }).pipe(res).once('error', function(err){
+        if(erhandled === err) return;
+        throw err;
+      }).once('finish', fl = function(){
+        b.removeListener('error', el);
+        console.log('bundle ok');
+      });
+
       break;
     default: res.end();
   }

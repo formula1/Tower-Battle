@@ -2,18 +2,18 @@
 
 var Floor = require('./Floor');
 
-var Tower = module.exports = function(numFloors, game, roles, filler){
-  this.rng = game.rng;
+var Tower = module.exports = function(game, numFloors, roles, filler){
+  this.game = game;
   this.world = game.world;
   if(!roles){
     roles = [];
   }
 
   if(
-    !roles.some(function(r){ return r.name === 'end'; })
+    !roles.some(function(r){ return r.name === 'End'; })
   ){
-    roles.end = require('./Room/Roles/end');
-    roles.push(roles.end);
+    roles.End = require('./Room/Roles/end');
+    roles.push(roles.End);
   }
 
   if(!filler){
@@ -32,22 +32,22 @@ Tower.prototype.createFloors = function(numFloors, roles, filler){
     lastFloor = curFloor;
   }
 
-  roles.end.undoFloor(lastFloor);
+  lastFloor.undoRole(roles.End);
   return floors;
 };
 
 Tower.prototype.nextFloor = function(){
   if(this.currentFloor) this.currentFloor.destroy(this.world);
   this.currentFloor = this.currentFloor.nextFloor;
-  this.currentFloor.spawn();
+  this.currentFloor.spawn(this.world);
 };
 
 Tower.prototype.setFloor = function(num){
   if(this.currentFloor) this.currentFloor.destroy(this.world);
   this.currentFloor = this.floors[num];
-  this.currentFloor.spawn();
+  this.currentFloor.spawn(this.world);
 };
 
 Tower.prototype.getStart = function(){
-  return this.currentFloor.roles.start.location;
+  return this.currentFloor.roles.Start.getLocation();
 };

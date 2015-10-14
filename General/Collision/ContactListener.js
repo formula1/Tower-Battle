@@ -28,7 +28,6 @@ listener.PostSolve = function(contact, impulse){
 };
 
 listener.EndContact = function(contact, impulse){
-  console.log(typeof contact, typeof impulse);
   var c = curContacts[contact];
   delete curContacts[contact];
   delete c.impulse;

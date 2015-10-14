@@ -1,21 +1,18 @@
 'use strict';
 
 var FixtureHelper = require('../../../Helpers/box2d/Fixture');
+var Role = require('../Role');
 
-var spawn;
-module.exports = function(){
-  this.name = 'end';
-  this.once('spawn', spawn);
+var End = module.exports = function(){
+  Role.call(this, End);
 };
 
-module.exports.undoFloor = function(floor){
-  var rs = floor.rooms;
-  for(var i = 0; i < rs.length; i++){
-    if(rs[i].name === 'end') return this.undo(rs[i]);
-  }
-};
+End.prototype = Object.create(Role.prototype);
+End.prototype.constructor = End;
+End.roleName = 'End';
 
-spawn = function(room){
+End.prototype.spawnRole = function(){
+  var room = this;
   var body = room.body;
   var scale = room.floor.scale;
   var sensor = FixtureHelper.rect(scale / 4, scale / 4);
@@ -23,18 +20,14 @@ spawn = function(room){
   sensor = body.CreateFixture(sensor);
   room.endSensor = sensor;
   room.onContactStart(sensor, function(fix, contact, oFix){
-    console.log('possible end', oFix, oFix.player);
-    var player = oFix.player;
-    if(!player || player.remote) return;
+    var player = oFix.damageable;
+    if(!player || !player.isPlayer) return;
     var tower = room.floor.tower;
-    setImmediate(tower.nextFloor.bind(tower));
+    tower.game.once('time', tower.nextFloor.bind(tower));
     room.offContactStart(sensor);
   });
 };
 
-module.exports.undo = function(room){
-  delete room.name;
-  room.removeListener('spawn', spawn);
+End.prototype.destroyRole = function(){
+  delete this.endSensor;
 };
-
-module.exports.roleName = 'end';
