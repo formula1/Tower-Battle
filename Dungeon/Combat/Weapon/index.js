@@ -7,47 +7,51 @@ var STATES = require('./STATES.json');
 
 var Weapon = module.exports = function(game, damage, expense){
   Equippable.call(this, game);
+  this.isWeapon = true;
   this.expense = expense;
   this.damage = damage;
   this.attackState = STATES.DORMANT;
   this.doTime = this.doTime.bind(this);
   this.doEquip = this.doEquip.bind(this);
   this.doUnequip = this.doUnequip.bind(this);
-  this.handlerSpawning = this.handleSpawning.bind(this);
+  this.handleSpawning = this.handleSpawning.bind(this);
   this.destroy = this.destroy.bind(this);
   this.on('equip', this.doEquip);
   this.on('unequip', this.doUnequip);
 
   this.on('body', function(body){
     if(!this.owner) return;
-    this.addContactStart(body, function(fix, contact, ofix){
+    this.onContactStart(body, function(fix, contact, ofix){
       if(!fix.damager) this.falter();
       else this.emit('impact', ofix);
     });
+  }.bind(this));
+  this.on('spawn', function(){
+    if(!this.owner) return;
+    FilterHelper.newGroup([this.body, this.owner.body]);
   }.bind(this));
 };
 
 Weapon.prototype = Object.create(Equippable.prototype);
 Weapon.prototype.constructor = Weapon;
 
-Weapon.prototype.doEquip = function(){
+Weapon.prototype.doEquip = function(owner){
   this.game.on('time', this.doTime);
-  var owner = this.owner;
   if(owner.world){
     this.handleSpawning();
   }
 
-  this.owner.on('spawn', this.handleSpawning);
-  this.owner.on('destroy', this.destroy);
+  owner.on('spawn', this.handleSpawning);
+  owner.on('destroy', this.destroy);
   this.idle();
 };
 
 Weapon.prototype.handleSpawning = function(){
-  FilterHelper.newGroup([this.body, this.owner.body]);
-  this.spawn(this.owner.world, this.owner.body.GetWorldCenter());
+  this.spawn(this.owner.game.world, this.owner.body.GetWorldCenter());
 };
 
 Weapon.prototype.doUnequip = function(me, owner){
+  this.destroy();
   this.game.removeListener('time', this.doTime);
   FilterHelper.resetCollidable(this.body);
   FilterHelper.removeFromGroup(this.body);
@@ -66,11 +70,18 @@ Weapon.prototype.doTime = function(){
 };
 
 Weapon.prototype.attack = function(){
+  switch(this.attackState){
+    case STATES.ATTACK: this.cancel(); return;
+    case STATES.CANCEL: this.falter(); return;
+    case STATES.FALTER: this.falter(); return;
+    case STATES.IDLE: this.attack(); return;
+  }
   FilterHelper.resetCollidable(this.body);
   this.current = this.doAttack();
 };
 
 Weapon.prototype.cancel = function(){
+  if(this.attackState === STATES.CANCEL) return this.falter();
   FilterHelper.makeUncollidable(this.body);
   this.current = this.doCancel();
 };

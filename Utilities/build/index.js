@@ -21,6 +21,7 @@ browserify(inFile)
 .transform(literalify.configure({
   Box2D: 'Module'
 }))
+.transform(require('bulkify'))
 .transform(envify({
   TARGET_ENV: 'browser'
 })).transform({

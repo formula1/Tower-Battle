@@ -12,6 +12,7 @@ var b = browserify(path.resolve(__dirname, '../../index.js'))
 .transform(literalify.configure({
   Box2D: 'Module'
 }))
+.transform(require('bulkify'))
 .transform(envify({
   TARGET_ENV: 'browser'
 })).on('error', function(){
@@ -27,11 +28,13 @@ server.on('request', function(req, res){
     case '/':
     case '/index.html':
       res.setHeader('Content-Type', 'text/html');
-      fs.createReadStream('./index.html').pipe(res);
+      fs.createReadStream(path.join(__dirname, '/index.html')).pipe(res);
       break;
     case '/Box2D.js':
       res.setHeader('Content-Type', 'application/javascript');
-      fs.createReadStream('../../web_modules/Box2D_v2.3.1_debug.js').pipe(res);
+      fs.createReadStream(
+        path.resolve(__dirname, '../../web_modules/Box2D_v2.3.1_debug.js')
+      ).pipe(res);
       break;
     case '/index.js':
       res.setHeader('Content-Type', 'application/javascript');
@@ -40,7 +43,7 @@ server.on('request', function(req, res){
 
       s = b.bundle().once('error', el = function(err){
         s.removeListener('finish', fl);
-        console.error('catching error', err.message);
+        console.error('catching error', err.message, err.stack);
         erhandled = err;
         res.end();
       }).pipe(res).once('error', function(err){

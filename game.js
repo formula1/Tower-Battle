@@ -9,12 +9,23 @@ var Player = require('./Player');
 var Camera = require('./General/Camera');
 var contactListener = require('./General/Collision/ContactListener');
 
+var assets = require('./Assets');
+
+console.log(assets);
+
 var B2d = require('Box2D');
 var Vec2 = B2d.b2Vec2;
 var World = B2d.b2World;
 
 var Game = module.exports = function(seed, draw, controller, size){
   EE.call(this);
+  this.timeListeners = [];
+  this.nextTime = this.nextTime.bind(this);
+
+  this.on('newListener', function(type){
+    console.trace(type);
+  });
+
   var r = new Random(seed);
   this.rng = r.random.bind(r);
 
@@ -26,7 +37,7 @@ var Game = module.exports = function(seed, draw, controller, size){
   }, .1, controller);
   this.world.SetDebugDraw(draw);
 
-  this.tower = new Tower(this, 8);
+  this.tower = new Tower(this, 8, assets.Rooms);
 
   this.player = new Player(this, controller, {
     hp: 30,
@@ -35,7 +46,6 @@ var Game = module.exports = function(seed, draw, controller, size){
     runSpeed: 10,
     walkSpeed: 5
   });
-
 };
 
 Game.prototype = Object.create(EE.prototype);
@@ -44,6 +54,8 @@ Game.prototype.constructor = Game;
 Game.prototype.loop = function(){
   var timeStep = 1.0 / 60.0;
 
+  var l = this.timeListeners.length;
+  while(l--) this.once('time', this.timeListeners.pop());
   this.emit('time', timeStep);
   var iterations = 10;
   this.world.Step(timeStep, iterations);
@@ -65,4 +77,8 @@ Game.prototype.start = function(){
   this.camera.follow(this.player.body);
   console.log('spawned');
   setImmediate(this.loop.bind(this));
+};
+
+Game.prototype.nextTime = function(fn){
+  this.timeListeners.push(fn);
 };

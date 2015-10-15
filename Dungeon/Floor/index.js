@@ -4,6 +4,7 @@ var roomProto = require('./room-setup');
 var EntityGen = require('./entity-gen');
 
 var Floor = module.exports = function(lastFloor, tower, roles, filler){
+  EntityGen.call(this);
   this.tower = tower;
   this.rng = tower.game.rng; // At some point I may want to include a seed
   this.rooms = [];
@@ -22,7 +23,6 @@ var Floor = module.exports = function(lastFloor, tower, roles, filler){
 
   this.roles.Start = this.unusedRooms.pop(); // remove the start;
   this.applyRoles(roles, filler);
-  EntityGen.call(this);
 };
 
 for(var name in roomProto){
@@ -36,9 +36,10 @@ for(name in EntityGen.prototype){
 Floor.prototype.constructor = Floor;
 
 Floor.prototype.applyRoles = function(roles, filler){
-  var l = roles.length;
+  var roleNames = Object.keys(roles);
+  var l = roleNames.length;
   while(l-- && this.unusedRooms.length){
-    this.applyRole(roles[l]);
+    this.applyRole(roles[roleNames[l]]);
   }
 
   l = this.unusedRooms.length;
@@ -59,6 +60,8 @@ Floor.prototype.spawn = function(world){
   this.rooms.forEach(function(room){
     room.spawn(world);
   });
+
+  console.log(this.entities);
 
   this.entities.forEach(function(entity){
     entity.spawn(world);

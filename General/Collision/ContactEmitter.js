@@ -83,14 +83,12 @@ ContactEmitter.prototype.removeContact = function(entity, fn, onoff){
   return this.removeListener(entity.collisionEmitter.uid + onoff, fn);
 };
 
-ContactEmitter.attemptContact = function(c){
+ContactEmitter.attemptContact = function(c, onoff){
   var contact = c.contact;
-  var impulse = c.impulse;
-  var sensor = c.isSensor;
   var fix = contact.GetFixtureA();
   var oFix = contact.GetFixtureB();
 
-  var ev = (impulse || sensor)?'-on':'-off';
+  var ev = (onoff)?'-on':'-off';
 
   if(fix.collisionEmitter){
     fix.collisionEmitter.emitter.emit(

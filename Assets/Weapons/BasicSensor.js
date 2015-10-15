@@ -1,12 +1,12 @@
 'use strict';
 
-var Weapon = require('./index');
+var Weapon = require('../../Dungeon/Combat/Weapon');
 
 var STATES = Weapon.STATES;
 
-var BasicSensor = module.exports = function(player){
-  Weapon.call(this, player.game, player.element, 5, 5);
-  this.player = player;
+var BasicSensor = module.exports = function(game){
+  Weapon.call(this, game, 5, 5);
+  console.log(this.isWeapon);
   this.frame = 0;
 };
 

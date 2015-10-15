@@ -14,6 +14,7 @@ Equippable.prototype = Object.create(Entity.prototype);
 Equippable.prototype.constructor = Equippable;
 
 Equippable.prototype.dungeonBody = function(body){
+  console.log('in dungeon body');
   if(this.owner) return;
   var circle = FixtureHelper.circle(3);
   circle.set_isSensor(true);
@@ -25,11 +26,24 @@ Equippable.prototype.dungeonBody = function(body){
     var obj = oFix.collisionEmitter.emitter;
     if(obj instanceof Equippable) return;
     if(!(obj instanceof Entity)) return;
-    Entity.emit('equippable', _this);
+    if(obj === _this.oldOwner){
+      console.log('found old owner');
+      return;
+    }
+
+    _this.game.nextTime(obj.emit.bind(obj, 'equippable', _this));
+  });
+
+  _this.onContactEnd(sensor, function(fix, contact, oFix){
+    if(!oFix.collisionEmitter) return;
+    var obj = oFix.collisionEmitter.emitter;
+    if(obj !== _this.oldOwner) return;
+    _this.oldOwner = void 0;
   });
 };
 
 Equippable.prototype.setOwner = function(newOwner){
+  console.log(this.owner, newOwner, this);
   if(!this.owner && !newOwner){
     throw new Error(
       'need to either: ' +
@@ -38,19 +52,21 @@ Equippable.prototype.setOwner = function(newOwner){
     );
   }
 
-  if(!this.owner){
+  var oldOwner = this.owner;
+  this.owner = newOwner;
+  if(!oldOwner){
     if(this.body)
       this.destroy();
   }else{
-    this.emit('unequip', this.owner, this);
+    this.oldOwner = oldOwner;
+    this.emit('unequip', oldOwner, this);
   }
 
   if(!newOwner){
-    if(this.owner.world)
-      this.spawn(this.owner.world, this.owner.body.GetWorldCenter());
+    if(oldOwner.world)
+      this.spawn(oldOwner.world, oldOwner.body.GetWorldCenter());
   }else{
     this.emit('equip', newOwner, this);
   }
 
-  this.owner = newOwner;
 };

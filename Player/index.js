@@ -48,6 +48,8 @@ var Player = module.exports = function(game, controller, config){
       .sub(this.body.GetLinearVelocity());
   }.bind(this));
 
+  this.on('equippable', this.equip.bind(this));
+
 };
 
 Player.prototype = Object.create(Movable.prototype);
@@ -66,3 +68,9 @@ Player.prototype.getDamageableShape = function(){
   return FixtureHelper.circle(this.config.damageableRadius);
 };
 
+Player.prototype.equip = function(obj){
+  if(obj.isWeapon) return this.useWeapon(obj);
+  if(obj.isArmor) return this.useArmor(obj);
+  console.error(obj);
+  throw new Error('Cannot equip non weapon, non Armor');
+};

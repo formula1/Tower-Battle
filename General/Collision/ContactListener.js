@@ -15,7 +15,7 @@ listener.BeginContact = function(contact){
     c.contact.GetFixtureB().IsSensor()
   );
 
-  if(c.isSensor) ContactEmitter.attemptContact(c);
+  if(c.isSensor) ContactEmitter.attemptContact(c, true);
 };
 
 listener.PreSolve = function(){};
@@ -24,12 +24,12 @@ listener.PostSolve = function(contact, impulse){
   var c = curContacts[contact];
   var oldImpulse = c.impulse;
   c.impulse = impulse;
-  if(!oldImpulse) ContactEmitter.attemptContact(c);
+  if(!oldImpulse) ContactEmitter.attemptContact(c, true);
 };
 
-listener.EndContact = function(contact, impulse){
+listener.EndContact = function(contact){
   var c = curContacts[contact];
   delete curContacts[contact];
   delete c.impulse;
-  ContactEmitter.attemptContact(c);
+  ContactEmitter.attemptContact(c, false);
 };

@@ -5,6 +5,7 @@ var Weapon = require('./index');
 var Unequipped = module.exports = function(player){
   Weapon.call(this, player.game, 5, 5);
   this.element = player.element;
+  this.setOwner(player);
 };
 
 Unequipped.prototype = Object.create(Weapon.prototype);

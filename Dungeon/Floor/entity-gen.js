@@ -4,10 +4,12 @@ var EntityGen = module.exports = function(){
   this.entities = [];
 };
 
-EntityGen.prototype.addEntity = function(entity){
+EntityGen.prototype.addEntity = function(entity, position){
   var i = this.entities.indexOf(entity);
   if(i > -1) throw new Error('this entity already exists on this floor');
   this.entities.push(entity);
+  console.log(this, this.entities);
+  entity.position.set(position);
   if(this.world){
     entity.spawn(this.world);
   }

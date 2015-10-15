@@ -3,11 +3,10 @@
 var Armor = require('../../Dungeon/Combat/Armor');
 var Element = require('../../Dungeon/Combat/Element');
 
-var BasicMinus = module.exports = function(damageable){
-  Armor.call(this, damageable.game);
-  this.setOwner(damageable);
-  this.element = damageable.element;
-  this.minus = 1 + Math.floor(Math.sqrt(1 / damageable.game.rng()));
+var BasicMinus = module.exports = function(game){
+  Armor.call(this, game);
+  this.minus = 1 + Math.floor(Math.sqrt(1 / game.rng()));
+  this.element = 1 + Math.floor(game.rng() * 3);
 };
 
 BasicMinus.prototype = Object.create(Armor.prototype);

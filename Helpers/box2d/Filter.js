@@ -19,7 +19,7 @@ module.exports.resetCollidable = function(v){
 
   if(v instanceof b2Body){
     var fix = v.GetFixtureList();
-    while(fix){
+    while(fix.pointer){
       this.resetCollidable(v);
       fix = fix.GetNext();
     }
@@ -38,7 +38,7 @@ module.exports.makeUncollidable = function(v){
 
   if(v instanceof b2Body){
     var fix = v.GetFixtureList();
-    while(fix){
+    while(fix.pointer){
       this.makeUncollidable(v);
       fix = fix.GetNext();
     }
@@ -86,7 +86,7 @@ module.exports.addToGroup = function(v, group){
 
   if(v instanceof b2Body){
     var fix = v.GetFixtureList();
-    while(fix){
+    while(fix.pointer){
       this.addToGroup(v);
       fix = fix.GetNext();
     }
@@ -104,7 +104,7 @@ module.exports.removeFromGroup = function(v, group){
 
   if(v instanceof b2Body){
     var fix = v.GetFixtureList();
-    while(fix){
+    while(fix.pointer){
       this.removeFromGroup(v);
       fix = fix.GetNext();
     }

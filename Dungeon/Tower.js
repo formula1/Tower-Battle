@@ -6,14 +6,11 @@ var Tower = module.exports = function(game, numFloors, roles, filler){
   this.game = game;
   this.world = game.world;
   if(!roles){
-    roles = [];
+    roles = {};
   }
 
-  if(
-    !roles.some(function(r){ return r.name === 'End'; })
-  ){
+  if(!roles.End){
     roles.End = require('./Room/Roles/end');
-    roles.push(roles.End);
   }
 
   if(!filler){

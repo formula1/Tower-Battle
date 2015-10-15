@@ -3,7 +3,7 @@
 var Role = module.exports = function(SubRole){
   if(!SubRole.roleName)
     throw new Error(
-      'When creating a Role Class You need to provide a name'
+      'When creating a Role Class You need to provide the SubRole'
     );
   this.roleName = SubRole.roleName;
   this.spawnRole = SubRole.prototype.spawnRole.bind(this);

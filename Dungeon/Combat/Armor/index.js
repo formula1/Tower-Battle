@@ -6,6 +6,7 @@ var Equippable = require('../Equippable');
 var Armor = module.exports = function(game, element){
   Equippable.call(this, game);
   PPEE.call(this);
+  this.isArmor = true;
   this.element = element;
   this.game = game;
   this.modifyDamage = this.modifyDamage.bind(this);
