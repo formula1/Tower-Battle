@@ -11,29 +11,12 @@ var Player = module.exports = function(game, controller, config){
   this.element = config.element;
   this.config = config;
   this.isPlayer = true;
+  this.controller = controller;
 
   Movable.call(this, game, controller);
   Attacker.call(this, game, controller);
   Damageable.call(this, game, config.hp);
   this.personalBubble = new PersonalBubble(this, config.personalBubbleRadius);
-
-  this.adrenaline = 0;
-  this.energy = 0;
-
-  game.on('time', function(){
-    this.adrenaline--;
-    this.adrenaline += this.personalBubble.activity;
-
-    this.energy += this.isRunning?-4:1;
-  }.bind(this));
-
-  this.controller.on('attack', function(){
-    this.energy -= this.weapon.expense;
-  }.bind(this));
-
-  this.post('damage', function(netDamage){
-    this.adrenaline += this.energy - Math.pow(netDamage.value - this.energy, 2);
-  }.bind(this));
 
   controller.on('run', function(boo){
     console.log(boo);
@@ -44,7 +27,6 @@ var Player = module.exports = function(game, controller, config){
     // TODO: use work/energy equaton
     return impulse
       .mul(this.isRunning?config.runSpeed:config.walkSpeed)
-      .mul(Math.max(1, this.adrenaline))
       .sub(this.body.GetLinearVelocity());
   }.bind(this));
 

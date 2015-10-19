@@ -43,8 +43,8 @@ var Game = module.exports = function(seed, draw, controller, size){
     hp: 30,
     damageableRadius: 3,
     personalBubbleRadius: 10,
-    runSpeed: 10,
-    walkSpeed: 5
+    runSpeed: 20,
+    walkSpeed: 10
   });
 };
 

@@ -21,14 +21,16 @@ var Weapon = module.exports = function(game, damage, expense){
 
   this.on('body', function(body){
     if(!this.owner) return;
+    this.emit('equip-body', body);
     this.onContactStart(body, function(fix, contact, ofix){
-      if(!fix.damager) this.falter();
+      if(!ofix.IsSensor() && !fix.damager) this.falter();
       else this.emit('impact', ofix);
     });
   }.bind(this));
   this.on('spawn', function(){
     if(!this.owner) return;
     FilterHelper.newGroup([this.body, this.owner.body]);
+    FilterHelper.makeUncollidable(this.body);
   }.bind(this));
 };
 
@@ -76,6 +78,7 @@ Weapon.prototype.attack = function(){
     case STATES.FALTER: this.falter(); return;
     case STATES.IDLE: this.attack(); return;
   }
+  this.emit('attack', this);
   FilterHelper.resetCollidable(this.body);
   this.current = this.doAttack();
 };
@@ -96,13 +99,17 @@ Weapon.prototype.dormant = function(){
 };
 
 Weapon.prototype.falter = function(){
-  this.emit('problem');
+  this.emit('falter');
   FilterHelper.makeUncollidable(this.body);
   this.current = this.doFalter();
 };
 
 Weapon.prototype.attachToOwner = function(){
   throw new Error('attachToOwner is abstract and needs to be implemented');
+};
+
+Weapon.prototype.getDamage = function(){
+  return {value: this.damage};
 };
 
 Weapon.STATES = STATES;

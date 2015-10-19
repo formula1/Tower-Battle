@@ -32,6 +32,7 @@ Entity.prototype.spawn = function(world, position){
 };
 
 Entity.prototype.destroy = function(world){
+  this.emit('pre-destroy', this);
   world = this.world;
   this.position.set(this.body.GetWorldCenter());
   this.removeContact(this.body);

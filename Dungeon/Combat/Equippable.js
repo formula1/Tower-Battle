@@ -55,16 +55,16 @@ Equippable.prototype.setOwner = function(newOwner){
   var oldOwner = this.owner;
   this.owner = newOwner;
   if(!oldOwner){
-    if(this.body)
-      this.destroy();
+    var nCFL = newOwner.game.tower.currentFloor;
+    if(nCFL) nCFL.removeEntity(this);
   }else{
     this.oldOwner = oldOwner;
     this.emit('unequip', oldOwner, this);
   }
 
   if(!newOwner){
-    if(oldOwner.world)
-      this.spawn(oldOwner.world, oldOwner.body.GetWorldCenter());
+    var oCFL = oldOwner.game.tower.currentFloor;
+    if(oCFL) oCFL.addEntity(this, oldOwner.body.GetWorldCenter());
   }else{
     this.emit('equip', newOwner, this);
   }

@@ -2,7 +2,8 @@
 
 module.exports = {
   Rooms: {
-    ExampleDroppableRoom: require('./Rooms/ExampleDroppableRoom')
+    ExampleDroppableRoom: require('./Rooms/ExampleDroppableRoom'),
+    ExampleMinionRoom: require('./Rooms/ExampleMinionRoom')
   },
   Weapons: {
     BasicSensor: require('./Weapons/BasicSensor.js')

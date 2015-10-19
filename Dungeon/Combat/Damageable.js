@@ -44,9 +44,12 @@ Damageable.prototype.getDamageableShape = function(){
 
 Damageable.prototype.applyDamage = function(fix, contact, ofix){
   if(!ofix.damager) return;
-  var impulse = contact.impulse.get_normalImpulses()[0];
-  var threshhold = this.armor.impactThreshhold || 1;
-  if(impulse <= threshhold) return;
+  if(contact.impulse){
+    var impulse = contact.impulse.get_normalImpulses()[0];
+    var threshhold = this.armor.impactThreshhold || 1;
+    if(impulse <= threshhold) return;
+  }
+
   var hp = this.hp;
   this.run('damage', ofix.damager.getDamage(), function(damage){
     hp -= damage.value;

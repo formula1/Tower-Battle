@@ -5,6 +5,7 @@ var Floor = require('./Floor');
 var Tower = module.exports = function(game, numFloors, roles, filler){
   this.game = game;
   this.world = game.world;
+  game.tower = this;
   if(!roles){
     roles = {};
   }

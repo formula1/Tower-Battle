@@ -1,0 +1,47 @@
+- I see a player
+- I don't recognize them
+- assess what they are doing
+  - attacking me or ally - likely an enemy
+  - attacking a neutral - unknown but polarizing (Either Enemy or Ally)
+  - attackign an enemy - possible ally
+  - just walking - possible neutral
+- Item oppotunity level
+  - for each item
+    - how big
+    - how expensive
+    - how rare
+    - how much time would it take to make?
+    - how quality is the item (experience of the maker)
+    - demand/supply status
+    - how dangerous?
+    - serves a purpose of ally or self?
+    - serves a purpose for enemy?
+  - what is advertised/visible that they "own"
+  - what is private/visible that they "own"
+  - what is advertised/hidden that they "own"
+    - Promises or un "tryable"
+   - what is private/hidden that they "own"
+    - bags/pockets
+- judge person opportunity
+  - What indicators of job?
+  - What indicators of rank?
+  - What indicators of affiliation?
+    - someone who you or ally want
+  - How strong are they?
+
+- I hear something occuring
+- I dont see them
+- look to remember if I have been in that direction
+  - If the location its coming from has many areas that are unknown
+    - If I have an ally location nearby - Likely ally
+    - If I have an enemy location nearby - Likely enemy
+    - If neutral - Likely neutral
+    - If unknown - Consider unknown
+  - If the location its coming from has no opening
+    - Was any one there before?
+      - Were they an ally?
+        - its ok
+      - Were they a neutral
+        - its ok
+      - Were they an enemy
+        - Expect threat

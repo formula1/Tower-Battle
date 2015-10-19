@@ -61,3 +61,9 @@ Vec2.prototype.mul = function(x, y){
   this.Set(this.get_x() * x, this.get_y() * y);
   return this;
 };
+
+Vec2.prototype.equals = function(v){
+  if(this.get_x() !== v.get_x()) return false;
+  if(this.get_y() !== v.get_y()) return false;
+  return true;
+};

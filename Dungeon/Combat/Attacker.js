@@ -37,11 +37,18 @@ Attacker.prototype.falter = function(){
 };
 
 Attacker.prototype.useWeapon = function(weapon){
-  this.weapon.setOwner(void 0);
-  this.weapon.removeAllListeners('impact');
-  this.weapon.removeAllListeners('finish');
-  this.weapon.removeAllListeners('problem');
+  if(this.weapon){
+    this.weapon.setOwner(void 0);
+    this.weapon.removeAllListeners('impact');
+    this.weapon.removeAllListeners('finish');
+    this.weapon.removeAllListeners('problem');
+  }
+
   this.weapon = weapon;
   this.weapon.setOwner(this);
+  this.weapon.on('impact', this.emit.bind(this, 'weapon-impact'));
+  this.weapon.on('finish', this.emit.bind(this, 'weapon-ready'));
+  this.weapon.on('problem', this.emit.bind(this, 'weapon-problem'));
+  this.weapon.on('attack', this.emit.bind(this, 'weapon-attack'));
 };
 
