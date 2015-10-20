@@ -66,7 +66,9 @@ Game.prototype.loop = function(){
 Game.prototype.render = function(timeStep){
   this.draw.clear();
   this.camera.step(timeStep);
+  this.emit('pre-debugDraw', this.draw);
   this.world.DrawDebugData();
+  this.emit('post-debugDraw', this.draw);
   this.draw.flush();
 };
 

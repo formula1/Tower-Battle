@@ -16,15 +16,12 @@ var Damageable = module.exports = function(game, hp, armor){
 
   this.on('body', function(body){
     var fix = this.getDamageableShape();
+    fix.set_density(1.0);
     this.damageableFixture = body.CreateFixture(fix);
     this.damageableFixture.damageable = this;
     this.onContactStart(this.damageableFixture, this.applyDamage);
   }.bind(this));
 
-  this.doMovement = this.doMovement.bind(this);
-
-  this.on('spawn', game.on.bind(game, 'time', this.doMovement));
-  this.on('destroy', game.removeListener.bind(game, 'time', this.doMovement));
   if(armor) this.useArmor(armor);
 };
 
@@ -57,6 +54,12 @@ Damageable.prototype.applyDamage = function(fix, contact, ofix){
   });
 
   this.hp = hp;
+  if(this.hp <= 0) this.game.nextTime(this.checkIsDead.bind(this));
+};
+
+Damageable.prototype.checkIsDead = function(){
+  if(this.hp > 0) return;
+  this.destroy();
 };
 
 Damageable.prototype.useArmor = function(armor){

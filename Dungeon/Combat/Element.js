@@ -1,8 +1,17 @@
 'use strict';
 
 module.exports.scaleDamage = function(armor, damage){
-  if(!damage.element) return .75;
-  if(!armor.element) return 1.25;
+  if(damage.element === armor.element) return damage;
+  if(!damage.element){
+    damage.value *= 0.75;
+    return damage;
+  }
+
+  if(!armor.element){
+    damage.value *= 1.25;
+    return damage;
+  }
+
   var te = armor.element, ae = damage.element;
   /*
   1 > 2 > 3 > 1
@@ -17,4 +26,5 @@ module.exports.scaleDamage = function(armor, damage){
   var cmpr = (te - ae + 3) % 3;
   var scalar = cmpr === 0?1:cmpr === 1?2:cmpr === 2?0.5:0;
   damage.value *= scalar;
+  return damage;
 };

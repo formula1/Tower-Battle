@@ -19,16 +19,18 @@ var Weapon = module.exports = function(game, damage, expense){
   this.on('equip', this.doEquip);
   this.on('unequip', this.doUnequip);
 
-  this.on('body', function(body){
+  this.on('bodyDef', function(bd){
     if(!this.owner) return;
-    this.emit('equip-body', body);
-    this.onContactStart(body, function(fix, contact, ofix){
+    bd.set_angle(this.owner.body.GetAngle());
+  });
+
+  this.on('spawn', function(){
+    if(!this.owner) return;
+    this.onContactStart(this.body, function(fix, contact, ofix){
       if(!ofix.IsSensor() && !fix.damager) this.falter();
       else this.emit('impact', ofix);
     });
-  }.bind(this));
-  this.on('spawn', function(){
-    if(!this.owner) return;
+
     FilterHelper.newGroup([this.body, this.owner.body]);
     FilterHelper.makeUncollidable(this.body);
   }.bind(this));
@@ -76,31 +78,34 @@ Weapon.prototype.attack = function(){
     case STATES.ATTACK: this.cancel(); return;
     case STATES.CANCEL: this.falter(); return;
     case STATES.FALTER: this.falter(); return;
-    case STATES.IDLE: this.attack(); return;
   }
   this.emit('attack', this);
   FilterHelper.resetCollidable(this.body);
+  this.attackState = STATES.ATTACK;
   this.current = this.doAttack();
 };
 
 Weapon.prototype.cancel = function(){
   if(this.attackState === STATES.CANCEL) return this.falter();
   FilterHelper.makeUncollidable(this.body);
+  this.attackState = STATES.CANCEL;
   this.current = this.doCancel();
 };
 
 Weapon.prototype.idle = function(){
   this.emit('finish');
+  this.attackState = STATES.IDLE;
   this.current = this.doIdle();
 };
 
 Weapon.prototype.dormant = function(){
-  this.currentState = STATES.DORMANT;
+  this.attackState = STATES.DORMANT;
 };
 
 Weapon.prototype.falter = function(){
   this.emit('falter');
   FilterHelper.makeUncollidable(this.body);
+  this.attackState = STATES.FALTER;
   this.current = this.doFalter();
 };
 

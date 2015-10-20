@@ -10,10 +10,17 @@ var Attacker = module.exports = function(game, controller, weapon){
   controller.on('attack', this.attack.bind(this));
   this.game = game;
   this.weapon = new UnEquippedWeapon(this);
-  this.attackState = STATES.DORMANT;
   this.cancel = this.cancel.bind(this);
   this.idle = this.idle.bind(this);
   this.falter = this.falter.bind(this);
+  this.game.on('post-debugDraw', function(draw){
+    draw.DrawText(
+      this.weapon.attackState,
+      this.body.GetWorldCenter(),
+      10, '#000'
+    );
+  }.bind(this));
+
   if(weapon) this.useWeapon(weapon);
 };
 
@@ -21,6 +28,7 @@ Attacker.prototype = Object.create(Controllable.prototype);
 Attacker.prototype.constructor = Attacker;
 
 Attacker.prototype.attack = function(){
+  console.log('attacking');
   this.weapon.attack();
 };
 

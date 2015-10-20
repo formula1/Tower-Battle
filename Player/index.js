@@ -7,6 +7,8 @@ var Movable = require('../Dungeon/Entity/Moveable');
 
 var FixtureHelper = require('../Helpers/box2d/Fixture');
 
+var DirectMovement = require('../General/Movement/direct-control');
+
 var Player = module.exports = function(game, controller, config){
   this.element = config.element;
   this.config = config;
@@ -16,19 +18,14 @@ var Player = module.exports = function(game, controller, config){
   Movable.call(this, game, controller);
   Attacker.call(this, game, controller);
   Damageable.call(this, game, config.hp);
-  this.personalBubble = new PersonalBubble(this, config.personalBubbleRadius);
 
   controller.on('run', function(boo){
     console.log(boo);
     this.isRunning = boo;
   }.bind(this));
 
-  this.pre('movement', function(impulse){
-    // TODO: use work/energy equaton
-    return impulse
-      .mul(this.isRunning?config.runSpeed:config.walkSpeed)
-      .sub(this.body.GetLinearVelocity());
-  }.bind(this));
+  DirectMovement(this);
+  this.personalBubble = new PersonalBubble(this, config.personalBubbleRadius);
 
   this.on('equippable', this.equip.bind(this));
 

@@ -34,13 +34,20 @@ Movable.prototype.doMovement = function(){
   impulse.set(this.newDirection);
   impulse.Normalize();
   var body = this.body;
-  this.run('movement', impulse, function(modifiedImpulse){
+
+  var angle = Math.atan2(impulse.get_y(), impulse.get_x());
+
+  this.run('movement', {angular: angle, linear: impulse}, function(obj){
+    body.ApplyAngularImpulse(
+      obj.angular * body.GetInertia(),
+      body.GetWorldCenter()
+    );
     body.ApplyLinearImpulse(
-      modifiedImpulse.clone().mul(body.GetMass()),
+      obj.linear.clone().mul(body.GetMass()),
       body.GetWorldCenter()
     );
 
-    return modifiedImpulse;
+    return obj;
   });
 };
 

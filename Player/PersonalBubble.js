@@ -25,7 +25,8 @@ var PersonalBubble = module.exports = function(player, radius){
   }.bind(this));
 
   player.pre('movement', function(impulse){
-    return impulse.mul(Math.max(1, this.adrenaline));
+    impulse.linear.mul(Math.max(1, this.adrenaline));
+    return impulse;
   }.bind(this));
 
 };

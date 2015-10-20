@@ -15,12 +15,13 @@ var BasicSensor = module.exports = function(game){
   console.log(this.isWeapon);
   this.frame = 0;
   this.joint = void 0;
-  this.on('equip-body', function(body){
+
+  this.on('body', function(body){
     if(!this.owner) return;
-    var oAng = this.owner.body.GetAngle();
-    tVec.set(Math.cos(oAng), Math.sin(oAng)).mul(5);
+    tVec.set(5, 0);
     var circle = FxH.circle(3, tVec);
     circle.set_isSensor(true);
+    circle.set_density(1.0);
     var fix = body.CreateFixture(circle);
     fix.damager = this;
   }.bind(this));
@@ -59,7 +60,7 @@ BasicSensor.prototype.doAttack = function(){
   var animcounter = 0;
   return function(){
     animcounter = (animcounter + 1);
-    if(animcounter === 20) return true;
+    if(animcounter === 30) return true;
   };
 };
 
@@ -67,7 +68,7 @@ BasicSensor.prototype.doCancel = function(){
   var animcounter = 0;
   return function(){
     animcounter = (animcounter + 1);
-    if(animcounter === 10) return true;
+    if(animcounter === 20) return true;
   };
 };
 

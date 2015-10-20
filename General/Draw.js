@@ -78,6 +78,17 @@ proto.DrawCircle = function(center, radius, color){
   this.circle(center, radius, dummyAxis, false);
 };
 
+proto.DrawText = function(content, center, size, color){
+  this.setColorFromDebugDrawCallback(color);
+  var context = this.context;
+  context.scale(1, -1);
+  context.textAlign = 'center';
+  context.textBaseline = 'middle';
+  context.font = size + 'px Courier';
+  context.fillText(content, center.get_x(), -center.get_y());
+  context.scale(1, -1);
+};
+
 proto.DrawSolidCircle = function(center, radius, axis, color){
   this.setColorFromDebugDrawCallback(color);
   this.circle(center, radius, axis, true);

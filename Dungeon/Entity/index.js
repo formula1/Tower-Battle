@@ -28,6 +28,8 @@ Entity.prototype.spawn = function(world, position){
   var body = this.body = world.CreateBody(bodyDef);
   body.entity = this;
   this.emit('body', body);
+  body.SetFixedRotation(false);
+  console.log('fixed: ', body.IsFixedRotation());
   this.emit('spawn', this);
 };
 

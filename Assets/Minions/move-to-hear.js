@@ -11,6 +11,8 @@ var MoveToTarget = require(
   '../../Dungeon/Combat/AI/target-processors/move-to-target'
 );
 
+var DirectMovement = require('../../General/Movement/direct-control');
+
 var EE = require('events').EventEmitter;
 var defaultConfig;
 
@@ -29,12 +31,7 @@ var ExampleMinion = module.exports = function(game, config){
   EarRangeAI(this);
   var moveToTarget = MoveToTarget(this);
   this.on('enemy', moveToTarget);
-
-  this.pre('movement', function(impulse){
-    // TODO: use work/energy equaton
-    impulse.mul(10);
-    return impulse.sub(this.body.GetLinearVelocity());
-  }.bind(this));
+  DirectMovement(this);
 
   this.on('equippable', this.equip.bind(this));
 
@@ -58,6 +55,7 @@ ExampleMinion.prototype.equip = function(obj){
 
 defaultConfig = {
   hp: 10,
+  walkSpeed: 10,
   damageableRadius: 2,
   element: -1
 };
