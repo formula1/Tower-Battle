@@ -28,7 +28,6 @@ Attacker.prototype = Object.create(Controllable.prototype);
 Attacker.prototype.constructor = Attacker;
 
 Attacker.prototype.attack = function(){
-  console.log('attacking');
   this.weapon.attack();
 };
 

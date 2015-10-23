@@ -20,7 +20,6 @@ var Player = module.exports = function(game, controller, config){
   Damageable.call(this, game, config.hp);
 
   controller.on('run', function(boo){
-    console.log(boo);
     this.isRunning = boo;
   }.bind(this));
 
@@ -50,6 +49,5 @@ Player.prototype.getDamageableShape = function(){
 Player.prototype.equip = function(obj){
   if(obj.isWeapon) return this.useWeapon(obj);
   if(obj.isArmor) return this.useArmor(obj);
-  console.error(obj);
   throw new Error('Cannot equip non weapon, non Armor');
 };

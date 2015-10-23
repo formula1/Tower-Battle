@@ -12,7 +12,6 @@ var STATES = Weapon.STATES;
 
 var BasicSensor = module.exports = function(game){
   Weapon.call(this, game, 5, 5);
-  console.log(this.isWeapon);
   this.frame = 0;
   this.joint = void 0;
 

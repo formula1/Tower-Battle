@@ -8,7 +8,6 @@ var GROUP_COUNTER = 1;
 
 module.exports.resetCollidable = function(v){
   if(v instanceof b2Fixture){
-    console.log(v.lastFilterValue, v.lastGroupValue);
     if(!v.lastFilterValue && !v.lastGroupValue) return;
     var fdata = v.GetFilterData();
     if(v.lastFilterValue !== void 0) fdata.set_maskBits(v.lastFilterValue);

@@ -14,7 +14,6 @@ Equippable.prototype = Object.create(Entity.prototype);
 Equippable.prototype.constructor = Equippable;
 
 Equippable.prototype.dungeonBody = function(body){
-  console.log('in dungeon body');
   if(this.owner) return;
   var circle = FixtureHelper.circle(3);
   circle.set_isSensor(true);
@@ -27,7 +26,6 @@ Equippable.prototype.dungeonBody = function(body){
     if(obj instanceof Equippable) return;
     if(!(obj instanceof Entity)) return;
     if(obj === _this.oldOwner){
-      console.log('found old owner');
       return;
     }
 
@@ -43,7 +41,6 @@ Equippable.prototype.dungeonBody = function(body){
 };
 
 Equippable.prototype.setOwner = function(newOwner){
-  console.log(this.owner, newOwner, this);
   if(!this.owner && !newOwner){
     throw new Error(
       'need to either: ' +

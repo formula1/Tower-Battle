@@ -22,10 +22,11 @@ var ExampleDroppableRoom = module.exports = function(){
   var cat = DROPPABLE[D_CATEGORIES[Math.floor(D_CATEGORIES.length * rng())]];
   var poss = Object.keys(cat);
   var Droppable = cat[poss[Math.floor(poss.length * rng())]];
+  console.log(this.location);
   this.floor.addEntity(
     new Droppable(game),
-    new Vec2(this.location.x - .5, this.location.y - .5)
-      .mul(this.floor.scale)
+    new Vec2(this.location.x, this.location.y)
+      .mul(this.floor.scale * 2)
   );
 };
 

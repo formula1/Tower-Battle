@@ -11,7 +11,6 @@ var createSetter = function(setting){
     },
 
     set: function(v){
-      console.log('setting', label, v);
       if(v !== v) throw new Error('NAN Found');
       init = v;
     }
@@ -24,7 +23,6 @@ var createSetter = function(setting){
 
 var createMethod = function(label){
   this[label] = function(){
-    console.log('doing', label, arguments);
     for(var i = 0, l = arguments.length; i < l; i++){
       if(arguments[i] !== arguments[i])
         throw new Error('NAN Found');

@@ -35,8 +35,9 @@ Tower.prototype.createFloors = function(numFloors, roles, filler){
 };
 
 Tower.prototype.nextFloor = function(){
-  if(this.currentFloor) this.currentFloor.destroy(this.world);
-  this.currentFloor = this.currentFloor.nextFloor;
+  var oldFloor = this.currentFloor;
+  this.currentFloor = oldFloor.nextFloor;
+  oldFloor.destroy(this.world);
   this.currentFloor.spawn(this.world);
 };
 

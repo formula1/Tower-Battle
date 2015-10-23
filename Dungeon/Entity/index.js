@@ -4,6 +4,7 @@ var B2d = require('Box2D');
 var Vec2 = B2d.b2Vec2;
 var BodyDef = B2d.b2BodyDef;
 var ContactEmitter = require('../../General/Collision/ContactEmitter');
+var hat = require('hat');
 
 var Entity = module.exports = function(game, position){
   ContactEmitter.call(this);
@@ -29,7 +30,6 @@ Entity.prototype.spawn = function(world, position){
   body.entity = this;
   this.emit('body', body);
   body.SetFixedRotation(false);
-  console.log('fixed: ', body.IsFixedRotation());
   this.emit('spawn', this);
 };
 

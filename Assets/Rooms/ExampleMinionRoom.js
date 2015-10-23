@@ -10,14 +10,26 @@ var MINIONS = [
 
 var ExampleMinionRoom = module.exports = function(){
   Role.call(this, ExampleMinionRoom);
+  var floor = this.floor;
   var game = this.floor.tower.game;
   var rng = game.rng;
-  var Minion = MINIONS[Math.floor(MINIONS.length * rng())];
-  this.floor.addEntity(
-    new Minion(game),
-    new Vec2(this.location.x - .5, this.location.y - .5)
-      .mul(this.floor.scale)
+  var MinionClass = MINIONS[Math.floor(MINIONS.length * rng())];
+  var minion = new MinionClass(game);
+  var dlist = function(){
+    if(floor.tower.currentFloor !== floor) return;
+    floor.removeEntity(minion);
+    minion.removeListener('destroy', dlist);
+  };
+
+  minion.on('destroy', dlist);
+
+  console.log(this.location);
+  floor.addEntity(
+    minion,
+    new Vec2(this.location.x, this.location.y)
+      .mul(this.floor.scale * 2)
   );
+
 };
 
 ExampleMinionRoom.prototype = Object.create(Role.prototype);

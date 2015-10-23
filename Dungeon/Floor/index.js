@@ -61,8 +61,6 @@ Floor.prototype.spawn = function(world){
     room.spawn(world);
   });
 
-  console.log(this.entities);
-
   this.entities.forEach(function(entity){
     entity.spawn(world);
   });

@@ -39,14 +39,20 @@ module.exports = function(minion){
 
   return function(unknown, persistant){
     isPersistant = persistant;
-    if(unknown instanceof b2Body){
-      currentTarget = unknown.body.GetWorldCenter();
+    var t;
+
+    if(unknown instanceof Entity){
+      t = unknown.body.GetWorldCenter();
+      if(t !== currentTarget){
+        currentTarget = t;
+        unknown.once('destroy', resetTarget);
+      }
+
       return;
     }
 
-    if(unknown instanceof Entity){
+    if(unknown instanceof b2Body){
       currentTarget = unknown.body.GetWorldCenter();
-      unknown.once('destroy', resetTarget);
       return;
     }
 
