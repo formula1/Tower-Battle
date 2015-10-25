@@ -2,10 +2,11 @@
 
 var B2D = require('Box2D');
 var Vec2 = B2D.b2Vec2;
-var Role = require('../../Dungeon/Room/Role');
+var Role = require('../../Dungeon/Tower/Room/Role');
 
 var DROPPABLE = {
   Weapons: {
+    Hammer: require('../Weapons/Hammer.js'),
     BasicSensor: require('../Weapons/BasicSensor')
   },
   Armor: {
@@ -21,7 +22,14 @@ var ExampleDroppableRoom = module.exports = function(){
   var rng = game.rng;
   var cat = DROPPABLE[D_CATEGORIES[Math.floor(D_CATEGORIES.length * rng())]];
   var poss = Object.keys(cat);
-  var Droppable = cat[poss[Math.floor(poss.length * rng())]];
+  console.log(poss);
+  var tnum = rng();
+  console.log(tnum);
+  tnum *= poss.length;
+  console.log(tnum);
+  tnum = Math.floor(tnum);
+  console.log(tnum);
+  var Droppable = cat[poss[tnum]];
   console.log(this.location);
   this.floor.addEntity(
     new Droppable(game),

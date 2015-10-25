@@ -1,6 +1,6 @@
 'use strict';
 
-var FixtureHelper = require('../../../Helpers/box2d/Fixture');
+var FixtureHelper = require('../../../../Helpers/box2d/Fixture');
 var Role = require('../Role');
 
 var End = module.exports = function(){

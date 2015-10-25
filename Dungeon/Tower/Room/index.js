@@ -1,6 +1,6 @@
 'use strict';
 
-var ContactEmitter = require('../../General/Collision/ContactEmitter');
+var ContactEmitter = require('../../../General/Collision/ContactEmitter');
 var AdjGen = require('./adjacent-generation');
 
 var Room = module.exports = function(location, floor){

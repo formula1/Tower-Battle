@@ -2,7 +2,7 @@
 
 var B2D = require('Box2D');
 var Vec2 = B2D.b2Vec2;
-var Role = require('../../Dungeon/Room/Role');
+var Role = require('../../Dungeon/Tower/Room/Role');
 
 var MINIONS = [
   require('../Minions/move-to-hear')

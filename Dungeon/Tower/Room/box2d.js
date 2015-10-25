@@ -5,7 +5,7 @@ var B2d = require('Box2D');
 var Vec2 = B2d.b2Vec2;
 var BodyDef = B2d.b2BodyDef;
 
-var FixtureHelper = require('../../Helpers/box2d/Fixture');
+var FixtureHelper = require('../../../Helpers/box2d/Fixture');
 
 var proto = module.exports;
 

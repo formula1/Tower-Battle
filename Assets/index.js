@@ -6,9 +6,10 @@ module.exports = {
     ExampleMinionRoom: require('./Rooms/ExampleMinionRoom')
   },
   Weapons: {
-    BasicSensor: require('./Weapons/BasicSensor.js')
+    BasicSensor: require('./Weapons/BasicSensor.js'),
+    Hammer: require('./Weapons/Hammer.js')
   },
   Armor: {
-    BasicSensor: require('./Armor/BasicMinus.js')
+    BasicMinus: require('./Armor/BasicMinus.js')
   }
 };

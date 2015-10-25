@@ -1,0 +1,23 @@
+### Creating a room
+
+I'd like to create a parser for something such as
+
+0000111333222000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+
+In this manner it is simple visually and probably to create a ui for level
+creation
+
+Important parts about rooms
+
+1) Every exit can be reached
+  - How is up to the level designer
+  - We need to create an algorithm that tests the room
+    - Check if there are obstacles to any exit
+      - Check if there are solutions from within the room
+2) Ensure the player has enough time till they get hit
