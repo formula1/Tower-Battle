@@ -48,6 +48,14 @@ var BasicSensor = module.exports = function(game){
 BasicSensor.prototype = Object.create(Weapon.prototype);
 BasicSensor.prototype.constructor = BasicSensor;
 
+BasicSensor.prototype.doSetup = function(){
+  var animcounter = 0;
+  return function(){
+    animcounter = (animcounter + 1);
+    if(animcounter === 20) return true;
+  };
+};
+
 BasicSensor.prototype.doIdle = function(){
   var animcounter = 0;
   return function(){

@@ -40,6 +40,7 @@ Weapon.prototype = Object.create(Equippable.prototype);
 Weapon.prototype.constructor = Weapon;
 
 Weapon.prototype.doEquip = function(owner){
+
   this.game.on('time', this.doTime);
   if(owner.world){
     this.handleSpawning();
@@ -67,20 +68,28 @@ Weapon.prototype.doUnequip = function(me, owner){
 Weapon.prototype.doTime = function(){
   if(!this.current()) return;
   switch(this.attackState){
-    case STATES.FALTER: this.idle(); return;
-    case STATES.CANCEL: this.idle(); return;
+    case STATES.IDLE: this.setup(); return;
+    case STATES.SETUP: this.attack(); return;
     case STATES.ATTACK: this.cancel(); return;
+    case STATES.FALTER: this.cancel(); return;
+    case STATES.CANCEL: this.idle(); return;
   }
+};
+
+Weapon.prototype.setup = function(){
+  FilterHelper.resetCollidable(this.body);
+  this.attackState = STATES.SETUP;
+  this.current = this.doSetup();
 };
 
 Weapon.prototype.attack = function(){
   switch(this.attackState){
+    case STATES.IDLE: this.setup(); return;
     case STATES.ATTACK: this.cancel(); return;
     case STATES.CANCEL: this.falter(); return;
     case STATES.FALTER: this.falter(); return;
   }
   this.emit('attack', this);
-  FilterHelper.resetCollidable(this.body);
   this.attackState = STATES.ATTACK;
   this.current = this.doAttack();
 };

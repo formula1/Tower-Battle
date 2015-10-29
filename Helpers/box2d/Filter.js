@@ -12,8 +12,7 @@ module.exports.resetCollidable = function(v){
     var fdata = v.GetFilterData();
     if(v.lastFilterValue !== void 0) fdata.set_maskBits(v.lastFilterValue);
     if(v.lastGroupValue !== void 0) fdata.set_groupIndex(v.lastGroupValue);
-    delete v.lastFilterValue;
-    delete v.lastGroupValue;
+    v.SetFilterData(fdata);
     return;
   }
 
@@ -81,13 +80,14 @@ module.exports.addToGroup = function(v, group){
   if(v instanceof b2Fixture){
     var fdata = v.GetFilterData();
     fdata.set_groupIndex(group);
+    v.SetFilterData(fdata);
     return;
   }
 
   if(v instanceof b2Body){
     var fix = v.GetFixtureList();
     while(fix.ptr){
-      this.addToGroup(fix);
+      this.addToGroup(fix, group);
       fix = fix.GetNext();
     }
 
@@ -99,6 +99,7 @@ module.exports.removeFromGroup = function(v, group){
   if(v instanceof b2Fixture){
     var fdata = v.GetFilterData();
     fdata.set_groupIndex(0);
+    v.SetFilterData(fdata);
     return;
   }
 

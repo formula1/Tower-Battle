@@ -8,6 +8,7 @@ var Equippable = module.exports = function(game, position){
   Entity.call(this, game, position);
   this.owner = void 0;
   this.on('body', this.dungeonBody.bind(this));
+  this.unEquip = this.setOwner.bind(this, void 0);
 };
 
 Equippable.prototype = Object.create(Entity.prototype);
@@ -38,6 +39,7 @@ Equippable.prototype.dungeonBody = function(body){
     if(obj !== _this.oldOwner) return;
     _this.oldOwner = void 0;
   });
+
 };
 
 Equippable.prototype.setOwner = function(newOwner){
@@ -50,19 +52,24 @@ Equippable.prototype.setOwner = function(newOwner){
   }
 
   var oldOwner = this.owner;
-  this.owner = newOwner;
+  this.owner = void 0;
   if(!oldOwner){
     var nCFL = newOwner.game.tower.currentFloor;
     if(nCFL) nCFL.removeEntity(this);
   }else{
     this.oldOwner = oldOwner;
+    oldOwner.removeListener('die', this.unEquip);
     this.emit('unequip', oldOwner, this);
   }
+
+  this.owner = newOwner;
 
   if(!newOwner){
     var oCFL = oldOwner.game.tower.currentFloor;
     if(oCFL) oCFL.addEntity(this, oldOwner.body.GetWorldCenter());
   }else{
+    this.oldOwner = void 0;
+    newOwner.on('die', this.unEquip);
     this.emit('equip', newOwner, this);
   }
 

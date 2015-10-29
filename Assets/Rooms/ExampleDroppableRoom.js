@@ -4,10 +4,12 @@ var B2D = require('Box2D');
 var Vec2 = B2D.b2Vec2;
 var Role = require('../../Dungeon/Tower/Room/Role');
 
+var ParsedWeapon = require('../../Dungeon/Combat/Weapon/parsed-weapon');
+
 var DROPPABLE = {
   Weapons: {
-    Hammer: require('../Weapons/Hammer.js'),
-    BasicSensor: require('../Weapons/BasicSensor')
+    Hammer: ParsedWeapon.bind(void 0, require('../Weapons/Hammer.json')),
+    BasicSensor: ParsedWeapon.bind(void 0, require('../Weapons/BasicSensor.json'))
   },
   Armor: {
     BasicSensor: require('../Armor/BasicMinus')

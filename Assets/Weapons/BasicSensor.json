@@ -1,0 +1,41 @@
+{
+  "damage": 5,
+  "bodies":{
+    "AttackCircle":{
+      "main": true,
+      "angle": {"relative":"owner"},
+      "position": {"relative":"owner", "offset":4},
+      "fixtures": [
+        {
+          "type":"Circle",
+          "sensor": true,
+          "radius": 3,
+          "damager": true
+        }
+      ]
+    }
+  },
+  "joints": {
+    "Connection": {
+      "type": "Weld",
+      "bodies": ["owner", "AttackCircle"]
+    }
+  },
+  "animations": {
+    "idle": {
+      "always": true
+    },
+    "setup": {
+      "time": 20
+    },
+    "attack": {
+      "time": 30
+    },
+    "cancel": {
+      "time": 20
+    },
+    "falter": {
+      "time": 10
+    }
+  }
+}

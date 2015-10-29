@@ -18,6 +18,14 @@ Unequipped.prototype.doIdle = function(){
   };
 };
 
+Unequipped.prototype.doSetup = function(){
+  var animcounter = 0;
+  return function(){
+    animcounter = (animcounter + 1);
+    if(animcounter === 10) return true;
+  };
+};
+
 Unequipped.prototype.doAttack = function(){
   var animcounter = 0;
   return function(){

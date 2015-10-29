@@ -1,0 +1,83 @@
+{
+  "damage": 5,
+  "bodies":{
+    "Hand":{
+      "main": false,
+      "angle": {"relative":"owner"},
+      "position": {"relative":"owner"},
+      "fixtures": [
+        {
+          "type":"Circle",
+          "sensor": true,
+          "radius": 1,
+          "position": {"x": 4, "y": 0}
+        }
+      ]
+    },
+    "Hammer": {
+      "main": true,
+      "angle": {"relative": "Hand", "offset": 0.5},
+      "position": {"relative": "Hand"},
+      "fixtures": [
+        {
+          "type": "Rectangle",
+          "damager": "true",
+          "position": {"x": 0, "y": 1},
+          "dimension": {"x": 3, "y": 1}
+        },
+        {
+          "type": "Rectangle",
+          "position": {"x": 0, "y": -4},
+          "dimension": {"x": 1, "y": 4},
+          "density": 0.3
+        }
+      ]
+    }
+  },
+  "joints": {
+    "Hand": {
+      "type": "Revolute",
+      "controlled": true,
+      "limit": [0.5, -0.5],
+      "bodies": ["owner", "Hand"]
+    },
+    "Hammer": {
+      "type": "Prismatic",
+      "controlled": true,
+      "angle": 0,
+      "limit": [0, -8],
+      "bodies": ["Hand", "Hammer"]
+    }
+  },
+  "animations": {
+    "idle": {
+      "always": true,
+      "targets": [
+        {"joint": "Hammer", "offset": 0},
+        {"joint": "Hand", "offset": 0.5}
+      ]
+    },
+    "setup": {
+      "targets": [
+        {"joint": "Hammer", "offset": -8},
+        {"joint": "Hand", "offset": 0.5}
+      ]
+    },
+    "attack": {
+      "always": true,
+      "targets": [
+        {"joint": "Hammer", "offset": -8},
+        {"joint": "Hand", "speed": -1}
+      ]
+    },
+    "cancel": {
+      "targets": [
+        {"joint": "Hammer", "offset": 0},
+        {"joint": "Hand", "offset": 0.5}
+      ]
+    },
+    "falter": {
+      "time": 10
+    }
+  }
+}

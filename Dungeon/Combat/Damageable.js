@@ -41,8 +41,9 @@ Damageable.prototype.getDamageableShape = function(){
 
 Damageable.prototype.applyDamage = function(fix, contact, ofix){
   if(!ofix.damager) return;
+
   if(contact.impulse){
-    var impulse = contact.impulse.get_normalImpulses()[0];
+    var impulse = contact.impulse.get_normalImpulse()[0];
     var threshhold = this.armor.impactThreshhold || 1;
     if(impulse <= threshhold) return;
   }
@@ -59,6 +60,7 @@ Damageable.prototype.applyDamage = function(fix, contact, ofix){
 
 Damageable.prototype.checkIsDead = function(){
   if(this.hp > 0) return;
+  this.emit('die', this);
   this.destroy();
 };
 

@@ -1,7 +1,8 @@
 {
-  "CANCEL": "canceling",
-  "ATTACK": "attacking",
-  "FALTER": "faltering",
   "IDLE": "idleing",
+  "SETUP": "setting-up",
+  "ATTACK": "attacking",
+  "CANCEL": "canceling",
+  "FALTER": "faltering",
   "DORMANT": "sleeping"
 }

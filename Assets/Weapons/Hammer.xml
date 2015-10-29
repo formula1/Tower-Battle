@@ -1,0 +1,72 @@
+<Weapon>
+  <Body name="Hand" >
+    <angle relative="Owner>Body" />
+    <position relative="Owner>Body" offset=4 />
+    <Fixtures>
+      <Circle sensor=true>
+        <dimension r=1 />
+      </Rectangle>
+    </Fixtures>
+  </Body>
+  <Body name="Hammer">
+    <angle relative="Body[name=Hand]" offset=0.5 />
+    <position relative="Body[name=Hand]" />
+    <Fixtures>
+      <Rectangle>
+        <positon y=1 />
+        <dimension x=4 y=2 />
+      </Rectangle>
+      <Rectangle>
+        <positon y=-4 />
+        <dimension x=1 y=8 />
+      </Rectangle>
+    </Fixtures>
+  </Body>
+  <Joint type="Revolute" name="Hand" controlled=true >
+    <limit upper=1/2 lower=-1/2 />
+    <A body="Owner>Body" />
+    <B body="Body[name=Hand]" />
+  </Joint>
+  <Joint type="Prismatic" name="Staff" controlled=true>
+    <limit upper=0 lower=-8 />
+    <A body="Body[name=Hand]" />
+    <B body="Body[name=Hammer]" />
+  </Joint>
+  <Animations>
+    <Animation name="idle" always="true" >
+      <target joint="Joint[Staff]">
+        <translation>0</translation>
+      </target>
+      <target joint="Joint[Hand]">
+        <rotation>1/2</rotation>
+      </target>
+    </Animation>
+    <Animation name="setup" >
+      <target joint="Joint[Staff]">
+        <translation>-8</translation>
+      </target>
+      <target joint="Joint[Hand]">
+        <rotation>1/2</rotation>
+      </target>
+    </Animation>
+    <Animation name="attack" always="true">
+      <target joint="Joint[Staff]">
+        <translation>-8</translation>
+      </target>
+      <motor joint="Joint[Hand]" >
+        <direction>-1</direction>
+      </motor>
+    </Animation>
+    <Animation name="cancel" >
+      <target joint="Joint[Staff]">
+        <translation>0</translation>
+      </target>
+      <target joint="Joint[Staff]" type="min">
+        <rotation>1/2</rotation>
+      </target>
+    </Animation>
+    <Animation name="falter" >
+      <time>10</time>
+    </Animation>
+  </Animations>
+</Weapon>

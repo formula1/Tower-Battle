@@ -62,8 +62,17 @@ Vec2.prototype.mul = function(x, y){
   return this;
 };
 
+Vec2.prototype.setAngle = function(angle){
+  this.Set(Math.cos(angle), Math.sin(angle));
+  return this;
+};
+
 Vec2.prototype.equals = function(v){
   if(this.get_x() !== v.get_x()) return false;
   if(this.get_y() !== v.get_y()) return false;
   return true;
+};
+
+Vec2.prototype.toString = function(){
+  return '{' + this.get_x() + ', ' + this.get_y() + '}';
 };
