@@ -12,24 +12,27 @@
   "author": "formula1 <samtobia@gmail.com> (https://github.com/formula1)",
   "license": "ISC",
   "dependencies": {
+    "async": "^1.5.0",
     "box2d": "^1.0.0",
     "browserify": "^11.2.0",
     "bulk-require": "^0.2.1",
     "bulkify": "^1.1.1",
-    "drawille-canvas": "^0.1.0",
     "envify": "^3.4.0",
     "express": "^4.13.3",
     "folderify": "^1.1.0",
     "hat": "0.0.3",
     "include-folder": "^1.0.0",
     "literalify": "^0.4.0",
+    "mathjs": "^2.4.0",
     "mersenne-twister": "^1.0.1",
     "open": "0.0.5",
     "request": "^2.64.0",
     "setimmediate": "^1.0.2",
-    "term-canvas": "0.0.5",
     "uglify": "^0.1.5",
     "uglify-js": "^2.5.0",
     "uglifyify": "^3.0.1"
+  },
+  "devDependencies": {
+    "depcheck": "^0.5.9"
   }
 }
