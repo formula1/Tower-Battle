@@ -3,11 +3,11 @@
 module.exports = function(tilemap, tileDictionary){
   var _this = this;
   tilemap.split('').forEach(function(char, index){
-    switch(char){
+    switch(char.toLowerCase()){
       case '\n':
       case '0':
         return;
-      case '-1':
+      case '-':
         _this.on('spawn', createHole);
 
     }

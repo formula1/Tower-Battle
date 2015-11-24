@@ -24,7 +24,7 @@ var PersonalBubble = module.exports = function(player, radius){
     this.adrenaline += this.energy - Math.pow(netDamage.value - this.energy, 2);
   }.bind(this));
 
-  player.pre('movement', function(impulse){
+  player.mod('movement', function(impulse){
     impulse.linear.mul(Math.max(1, this.adrenaline));
     return impulse;
   }.bind(this));
